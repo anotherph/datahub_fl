@@ -4,7 +4,8 @@ const mqtt = require('mqtt');
 const axios = require('axios');
 
 // conf
-conf = require('../conf.js');
+// conf = require('../conf.js');
+conf = require('./conf.js');
 const {host, port, endpoint, ...options} = conf.tas.connection;
 const connectUrl = `mqtt://${host}:${port}${endpoint}`
 const client = mqtt.connect(connectUrl);
@@ -12,6 +13,7 @@ const client = mqtt.connect(connectUrl);
 // Topic
 let mobiusTopic = {
     mobius: '/mobius/letMobiusKnow',
+    // mobius: '/mobius/KETI_Flowmeter'
 };
 
 // var 
@@ -40,31 +42,12 @@ loadEntity();
 
 function waitForTopic(callback) {
   client.subscribe(mobiusTopic.mobius, () => {
-    console.log('Subscribed to the topic');
+    console.log('Subscribed to the topic ' + mobiusTopic.mobius);
+    console.log('Wait for creation of CIN in Mobius');
     topicSubscribed = true;
     callback();
   });
 }
-
-// let setResource = (callback) => {
-//   waitForTopic(() => {
-//     getData((error, data) => {
-//       if (error) {
-//         callback(error, null); // Pass the error to the outer callback
-//       } else {
-//         setEntity(data);
-//         // Pass the data to postData, and provide a callback for postData
-//         postData(data, (postError, result) => {
-//           if (postError) {
-//             callback(postError, null); // Pass the error to the outer callback
-//           } else {
-//             callback(null, result); // Call the outer callback with result
-//           }
-//         });
-//       }
-//     });
-//   });
-// };
 
 let setResource = (callback) => {
   waitForTopic(() => {
@@ -192,12 +175,9 @@ let postData = (requestBodyJson, callback) => { // Add callback parameter
 
   axios.post(apiURL, requestBodyJson, { headers: requestHeaders })
     .then(response => {
-      // console.log(response.status);
-      // console.log(response.data);
       callback(null, response.data); // Call the callback with result
     })
     .catch(error => {
-      // console.error(error);
       callback(error, null); // Call the callback with an error
     });
 }
