@@ -4,16 +4,14 @@ const mqtt = require('mqtt');
 const axios = require('axios');
 
 // conf
-// conf = require('../conf.js');
 conf = require('./conf.js');
-const {host, port, endpoint, ...options} = conf.tas.connection;
-const connectUrl = `mqtt://${host}:${port}${endpoint}`
+const connectUrl = `mqtt://${conf.cse.host}:${conf.cse.mqttport}` 
 const client = mqtt.connect(connectUrl);
 
 // Topic
 let mobiusTopic = {
-    mobius: '/mobius/letMobiusKnow',
-    // mobius: '/mobius/KETI_Flowmeter'
+    // mobius: '/KETI_Flowmeter'
+    mobius: '/'+`${conf.ae.name}`
 };
 
 // var 
@@ -92,11 +90,12 @@ client.on('connect', () => {
 });
 
 let getData = (callback) => {
-  console.log('order: 1');
+  // console.log('order: 1');
   let config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: 'http://172.20.0.109:7579/Mobius/KETI_Flowmeter/flowmeter/la', // add mobius IP to conf.js
+      // url: 'http://172.20.0.109:7579/Mobius/KETI_Flowmeter/flowmeter/la', // add mobius IP to conf.js
+      url: 'http://'+`${conf.cse.host}`+':'+`${conf.cse.port}`+`${conf.cnt[0].parent}`+'/'+`${conf.cnt[0].name}`+'/la',
       headers: {
           'Accept': 'application/json',
           'X-M2M-RI': '12345',
@@ -117,7 +116,7 @@ let getData = (callback) => {
 
 let setEntity = (retriData) => {
 
-  console.log('order: 2');
+  // console.log('order: 2');
   
   //set entity
   mFlowrate=JSON.parse(retriData)["m2m:cin"]["con"]["m_flowrate"];
@@ -163,10 +162,11 @@ let setEntity = (retriData) => {
 };
 
 let postData = (requestBodyJson, callback) => { // Add callback parameter
-  console.log('order: 3');
+  // console.log('order: 3');
 
   // const apiURL = 'http://203.253.128.181:11003/entityOperations/upsert'; // add mobius IP to conf.js
-  const apiURL = 'http://172.20.0.168:8081/entityOperations/upsert';
+  // const apiURL = 'http://172.20.0.168:8081/entityOperations/upsert';
+  const apiURL = 'http://'+`${conf.datacore.host}`+':'+`${conf.datacore.port}`+'/entityOperations/upsert';
   const requestHeaders = {
     'Content-Type': 'application/json'
   };
