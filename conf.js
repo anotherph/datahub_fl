@@ -15,16 +15,16 @@
 const ip = require("ip");
 const { nanoid } = require("nanoid");
 
+let datacore ={};
 let conf = {};
 let cse = {};
 let ae = {};
 let cnt_arr = [];
-let sub_arr = [];
-let acp = {};
 
-conf.useprotocol = 'http'; // select one for 'http' or 'mqtt' or 'coap' or 'ws'
-
-conf.sim = 'disable'; // enable or disable
+datacore = { // ingest interface
+    host    : '172.20.0.168',
+    port    : '8081',
+};
 
 // build cse
 cse = {
@@ -55,66 +55,12 @@ cnt_arr = [
     {
         parent: '/' + cse.name + '/' + ae.name,
         name: 'flowmeter',
-    },
-    // {
-    //     parent: '/' + cse.name + '/' + ae.name,
-    //     name: 'co2',
-    // },
-    // {
-    //     parent: '/' + cse.name + '/' + ae.name,
-    //     name: 'temp',
-    // },
-    // {
-    //     parent: '/' + cse.name + '/' + ae.name,
-    //     name: 'led',
-    // },
+    }
 ];
-
-// build sub
-sub_arr = [
-    {
-        // parent: cnt_arr[3].parent + '/'  + cnt_arr[3].name,
-        parent: cnt_arr[0].parent + '/'  + cnt_arr[0].name,
-        name: 'sub1',
-        nu: 'mqtt://' + cse.host + ':' + cse.mqttport + '/' + ae.id + '?ct=json', // 'http:/' + ip.address() + ':' + ae.port + '/noti?ct=json',
-    },
-];
-
-// for tas
-let tas = {
-    client: {
-        connected: false,
-    },
-
-    connection: {
-        host: 'localhost',
-        port: 1883,
-        endpoint: '',
-        clean: true,
-        connectTimeout: 4000,
-        reconnectPeriod: 4000,
-        clientId: 'thyme_' + nanoid(15),
-        username: 'keti_thyme',
-        password: 'keti_thyme',
-    },
-};
-
-// build acp: not complete
-acp.parent = '/' + cse.name + '/' + ae.name;
-acp.name = 'acp-' + ae.name;
-acp.id = ae.id;
-
-conf.usesecure  = 'disable';
-
-if(conf.usesecure === 'enable') {
-    cse.mqttport = '8883';
-}
 
 conf.cse = cse;
+conf.datacore = datacore;
 conf.ae = ae;
 conf.cnt = cnt_arr;
-conf.sub = sub_arr;
-conf.acp = acp;
-conf.tas = tas;
 
 module.exports = conf;
