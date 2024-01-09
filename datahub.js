@@ -145,12 +145,12 @@ let setEntity = (retriData) => {
         ...requestBodyJson.entities[0],
         flowRate: {
           ...requestBodyJson.entities[0].flowRate,
-          value: mFlowrate,
+          value: parseFloat(mFlowrate),
           observedAt: curTime,
         },
         velocity: {
           ...requestBodyJson.entities[0].velocity,
-          value: mSpeed,
+          value: parseFloat(mSpeed),
           observedAt: curTime,
         },
       },
@@ -171,7 +171,7 @@ let postData = (requestBodyJson, callback) => { // Add callback parameter
     'Content-Type': 'application/json'
   };
 
-  console.log(requestBodyJson)
+  console.log(JSON.stringify(requestBodyJson))
 
   axios.post(apiURL, requestBodyJson, { headers: requestHeaders })
     .then(response => {
