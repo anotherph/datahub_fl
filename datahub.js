@@ -11,7 +11,8 @@ const client = mqtt.connect(connectUrl);
 // Topic
 let mobiusTopic = {
     // mobius: '/KETI_Flowmeter'
-    mobius: '/'+`${conf.ae.name}`
+    // mobius: '/'+`${conf.ae.name}`
+    mobius: '//Mobius/KETI_Flowmeter/flowmeter'
 };
 
 // var 
