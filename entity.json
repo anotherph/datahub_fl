@@ -17,6 +17,11 @@
             "type": "Property",
             "value": 0,
             "observedAt": "2022-10-14T02:57:08Z"
+         },
+         "cumulativeFlow": {
+            "type": "Property",
+            "value": 0,
+            "observedAt": "2022-10-14T02:57:08Z"
          }
       }
    ]
