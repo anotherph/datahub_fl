@@ -128,6 +128,11 @@ let setEntity = (retriData) => {
   matches = mSpeed.match(/\d+\.\d+/);
   mSpeed = matches && matches[0];
 
+  tflowrate=JSON.parse(retriData)["m2m:cin"]["con"]["t_flowrate"];
+  matches = tflowrate.match(/\d+\.\d+/);
+  tflowrate = matches && matches[0];
+  // console.log("tflowrate----->" + tflowrate);
+  
   curTime=JSON.parse(retriData)["m2m:cin"]["con"]["cur_time"];
   curTime='20' + curTime.replace(/\s/g, 'T') + 'Z';
 
@@ -136,6 +141,8 @@ let setEntity = (retriData) => {
   requestBodyJson['entities'][0]['flowRate']['observedAt']=curTime
   requestBodyJson['entities'][0]['velocity']['value']=mSpeed
   requestBodyJson['entities'][0]['velocity']['observedAt']=curTime
+  requestBodyJson['entities'][0]['cumulativeFlow']['value']=tflowrate
+  requestBodyJson['entities'][0]['cumulativeFlow']['observedAt']=curTime
 
   // console.log(requestBodyJson)
 
@@ -152,6 +159,11 @@ let setEntity = (retriData) => {
         velocity: {
           ...requestBodyJson.entities[0].velocity,
           value: parseFloat(mSpeed),
+          observedAt: curTime,
+        },
+        cumulativeFlow: {
+          ...requestBodyJson.entities[0].cumulativeFlow,
+          value: parseFloat(tflowrate),
           observedAt: curTime,
         },
       },
