@@ -44,7 +44,7 @@ ae = {
     name    : ae_name,
     id      : 'S' + ae_name,
     parent  : '/' + cse.name,
-    appid   : 'measure_co2',
+    appid   : 'KETI_Flowmeter',
     port    : '9727',
     bodytype: 'json',
     tasport : '3105',

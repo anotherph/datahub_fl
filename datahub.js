@@ -11,8 +11,8 @@ const client = mqtt.connect(connectUrl);
 // Topic
 let mobiusTopic = {
     // mobius: '/KETI_Flowmeter'
-    //mobius: '/'+`${conf.ae.name}`
-    mobius: '//Mobius/KETI_Flowmeter/flowmeter'
+    mobius: '/'+`${conf.ae.name}`
+    // mobius: '//Mobius/KETI_Flowmeter/flowmeter'
 };
 
 // var 
@@ -40,12 +40,7 @@ let loadEntity = () => {
 loadEntity();
 
 function waitForTopic(callback) {
-  client.subscribe(mobiusTopic.mobius, () => {
-    console.log('Subscribed to the topic ' + mobiusTopic.mobius);
-    console.log('Wait for creation of CIN in Mobius');
-    topicSubscribed = true;
-    callback();
-  });
+
 }
 
 let setResource = (callback) => {
@@ -85,8 +80,12 @@ client.on('message', (topic, message) => {
 client.on('connect', () => {
   // Perform any setup logic here
   console.log('Connected to MQTT broker');
-  waitForTopic(() => {
-    // You can add additional logic here after subscribing to the topic
+
+  client.subscribe(mobiusTopic.mobius, () => {
+      console.log('Subscribed to the topic ' + mobiusTopic.mobius);
+      console.log('Wait for creation of CIN in Mobius');
+      topicSubscribed = true;
+      callback();
   });
 });
 
