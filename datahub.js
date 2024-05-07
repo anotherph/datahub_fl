@@ -12,7 +12,8 @@ const client = mqtt.connect(connectUrl);
 let mobiusTopic = {
     // mobius: '/KETI_Flowmeter'
     // mobius: '/'+`${conf.ae.name}`
-    mobius: '/Mobius/KETI_Flowmeter/flowmeter'
+    // mobius: '/oneM2M/req/Mobius2/Mobius/KETI_Flowmeter/flowmeter/json'
+    mobius: '/oneM2M/req/Mobius2/#'
 };
 
 // var 
@@ -64,8 +65,10 @@ let setResource = (callback) => {
 };
 
 client.on('message', (topic, message) => {
+  console.log("message received: ", topic, message);
+
   // Check if the subscribed topic is received
-  if (topic === mobiusTopic.mobius && topicSubscribed) {
+  if (topicSubscribed && mobiusTopic.mobius.indexOf(topic) >= 0) {
     // setResource();
     setResource((error, result) => {
       if (error) {
@@ -81,7 +84,11 @@ client.on('connect', () => {
   // Perform any setup logic here
   console.log('Connected to MQTT broker');
 
-  client.subscribe(mobiusTopic.mobius, () => {
+  client.subscribe(mobiusTopic.mobius, (error) => {
+    if(error) {
+      console.error("subscribe error", error);
+    }
+
       console.log('Subscribed to the topic ' + mobiusTopic.mobius);
       console.log('Wait for creation of CIN in Mobius');
       topicSubscribed = true;
