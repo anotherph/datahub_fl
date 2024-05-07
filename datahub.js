@@ -85,7 +85,6 @@ client.on('connect', () => {
       console.log('Subscribed to the topic ' + mobiusTopic.mobius);
       console.log('Wait for creation of CIN in Mobius');
       topicSubscribed = true;
-      callback();
   });
 });
 
