@@ -8,7 +8,8 @@ const axios = require('axios');
 const config = require('./conf.js');
 const connectUrl = `mqtt://${config.cse.host}:${config.cse.mqttport}`
 const mobiusTopicConf = {
-  flowmeter: '/oneM2M/req/Mobius2/Mobius/KETI_Flowmeter/flowmeter/json'
+//  flowmeter: '/oneM2M/req/Mobius2/Mobius/KETI_Flowmeter/flowmeter/json'
+   flowmeter: '/oneM2M/req/Mobius2/Mobius/SKETI_Flowmeter/json'
 };
 const entityCreateRequestBodyTemplate = (() => {
   console.log('Loading template string of request body for creating waterflow entity')
